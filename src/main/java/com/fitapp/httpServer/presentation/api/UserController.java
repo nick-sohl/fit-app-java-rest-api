@@ -44,10 +44,8 @@ public class UserController implements HttpHandler {
   @Override
   public void handle(HttpExchange exchange) throws IOException {
 
-    System.out.println("Handle Request USERCONTROLLER...");
     // Gathering Infos
     String method = exchange.getRequestMethod();
-    System.out.println("Request Method: " + method);
     Headers requestHeaders = exchange.getRequestHeaders();
     InputStream body = exchange.getRequestBody();
 
@@ -58,11 +56,9 @@ public class UserController implements HttpHandler {
 
     if (!"GET".equals(method)) {
       exchange.sendResponseHeaders(405, -1);
-      System.out.println("Request Failed.");
       return;
     }
 
-    System.out.println("Get all Users via Service -> Adapter -> Repository from the DB.");
     try {
       List<User> users = findAllUsers();
       String json = mapper.writeValueAsString(users);
@@ -76,12 +72,5 @@ public class UserController implements HttpHandler {
       e.printStackTrace();
       exchange.sendResponseHeaders(500, -1);
     }
-
-    // for (User user : users) {
-    // System.out.println(user.getFname());
-    // System.out.println(convertToJsonString(user));
-    // String userJson = mapper.writeValueAsString(user);
-    // System.out.println(userJson);
-    // }
   }
 }
