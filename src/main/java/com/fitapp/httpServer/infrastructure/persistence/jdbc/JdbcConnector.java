@@ -10,8 +10,10 @@ public class JdbcConnector {
   private final int PORT;
   private final String DB_NAME;
 
-  private String DB_USER;
-  private String DB_PASSWORD;
+  public final String DB_USER;
+  public final String DB_PASSWORD;
+
+  public final String DB_URL;
 
   public JdbcConnector(Builder builder) {
     this.PROTOCOL = builder.protocol;
@@ -20,22 +22,9 @@ public class JdbcConnector {
     this.DB_NAME = builder.dbName;
     this.DB_USER = builder.dbUser;
     this.DB_PASSWORD = builder.dbPassword;
-  }
-
-  // jdbc:postgresql://db:5432/fit-app
-  private final String buildUrl() {
-    return PROTOCOL + "://" + HOST + ":" + PORT + "/" + DB_NAME;
-  }
-
-  public Connection establishConnection() {
-    String url = buildUrl();
-    try {
-      Connection connection = DriverManager.getConnection(url, DB_USER, DB_PASSWORD);
-      System.out.println("Connection Established! Meta-Data: " + connection.getMetaData());
-      return connection;
-    } catch (SQLException e) {
-      throw new RuntimeException("Could not establish a connection to the Database");
-    }
+    // build the URL from the arguments.
+    // For example: jdbc:postgresql://db:5432/fit-app
+    this.DB_URL = PROTOCOL + "://" + HOST + ":" + PORT + "/" + DB_NAME;
   }
 
   public static class Builder {
