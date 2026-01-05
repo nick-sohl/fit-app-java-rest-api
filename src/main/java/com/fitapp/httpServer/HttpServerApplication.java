@@ -2,26 +2,23 @@ package com.fitapp.httpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.sql.Connection;
 
 import com.fitapp.httpServer.application.service.UserService;
 import com.fitapp.httpServer.infrastructure.adapter.UserRepositoryAdapter;
 import com.fitapp.httpServer.infrastructure.persistence.UserRepository;
 import com.fitapp.httpServer.presentation.StaticFileHandler;
 import com.fitapp.httpServer.presentation.api.UserController;
-import com.fitapp.httpServer.presentation.api.WelcomeController;
 import com.sun.net.httpserver.HttpServer;
 
 public class HttpServerApplication {
 
-  private static WelcomeController welcomeController;
   private static UserController userController;
-  private static StaticFileHandler staticFileHandler;
 
   private static void runServer() throws IOException {
     // Create Http Server
+    // NOTE: 0.0.0.0 is a special wildcard.
+    // We use it to make the server running in a containers
+    // reachable from other containers.
     HttpServer httpServer = HttpServer.create(new InetSocketAddress("0.0.0.0", 8000), 0);
     System.out.println("Http Server created! " + "Address: " + httpServer.getAddress() + "\n");
 
