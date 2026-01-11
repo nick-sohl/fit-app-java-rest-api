@@ -4,12 +4,13 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+import com.fitapp.httpServer.infrastructure.adapter.MeasurementRepositoryAdapter;
 // Adapter
 import com.fitapp.httpServer.infrastructure.adapter.UserRepositoryAdapter;
 
 // DAO
 import com.fitapp.httpServer.infrastructure.persistence.repository.UserRepository;
-
+import com.fitapp.httpServer.application.service.MeasurementService;
 // Service
 import com.fitapp.httpServer.application.service.UserService;
 
@@ -47,17 +48,20 @@ public class HttpServerApplication {
   }
 
   public static void main(String[] args) throws IOException {
-    // Init Repo
+    // Repository
     UserRepository userRepository = new UserRepository();
-    // Init Adapter which is implementing Interface and using the methods of the
-    // Repo to retrieve data from the DB
+
+    // Adapter
     UserRepositoryAdapter userRepositoryAdapter = new UserRepositoryAdapter(userRepository);
-    // Init Service which is using the Adapter to retrieve data to work with the
-    // data
+    MeasurementRepositoryAdapter measurementRepositoryAdapter = new MeasurementRepositoryAdapter();
+
+    // Service
     UserService userService = new UserService(userRepositoryAdapter);
-    // Uses the Service to get the computed data
+    MeasurementService measurementService = new MeasurementService(measurementRepositoryAdapter);
+
+    // Controller
     HttpServerApplication.userController = new UserController(userService);
-    HttpServerApplication.measurementController = new MeasurementController();
+    HttpServerApplication.measurementController = new MeasurementController(measurementService);
     HttpServerApplication.runServer();
   }
 }

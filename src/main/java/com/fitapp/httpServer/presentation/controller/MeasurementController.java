@@ -9,13 +9,20 @@ import com.sun.net.httpserver.HttpExchange;
 
 import com.fitapp.httpServer.presentation.utility.JsonRequestReader;
 import com.fitapp.httpServer.application.dto.MeasurementRequest;
+import com.fitapp.httpServer.application.service.MeasurementService;
 
 public class MeasurementController extends RestHandler {
+  private MeasurementService measurementService;
+
+  public MeasurementController(MeasurementService measurementService) {
+    this.measurementService = measurementService;
+  }
 
   @Override
   protected void doGet(HttpExchange exchange) {
   }
 
+  // TODO: Delegate Request to Service to write data to DB
   @Override
   protected void doPost(HttpExchange exchange) {
     MeasurementRequest dto = JsonRequestReader.read(exchange.getRequestBody(), MeasurementRequest.class);
