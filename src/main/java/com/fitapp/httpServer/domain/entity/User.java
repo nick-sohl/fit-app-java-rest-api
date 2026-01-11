@@ -14,7 +14,7 @@ public class User {
   int bodyHeight;
   int bodyWeight;
 
-  // For Persisted Users -> ID is already created
+  // NOTE: For Persisted Users -> ID is already created
   public User(String fname, String lname, Password password, int age, int bodyHeight, int bodyWeight) {
     this.fname = fname;
     this.lname = lname;

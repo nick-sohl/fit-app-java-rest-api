@@ -3,7 +3,7 @@ package com.fitapp.httpServer.application.usecase.user;
 import java.util.Optional;
 
 import com.fitapp.httpServer.application.port.UserRepositoryInterface;
-import com.fitapp.httpServer.domain.entity.User;
+import com.fitapp.httpServer.application.dto.UserDto;
 
 public class FindUser {
   UserRepositoryInterface userRepositoryInterface;
@@ -12,8 +12,8 @@ public class FindUser {
     this.userRepositoryInterface = userRepositoryInterface;
   }
 
-  public Optional<User> findUser(int userId) {
-    Optional<User> user = userRepositoryInterface.findUser(userId);
+  public Optional<UserDto> findUser(int userId) {
+    Optional<UserDto> user = userRepositoryInterface.findUser(userId);
     return user;
   }
 }

@@ -1,4 +1,4 @@
-package com.fitapp.httpServer.infrastructure.persistence;
+package com.fitapp.httpServer.infrastructure.persistence.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.fitapp.httpServer.domain.entity.User;
-import com.fitapp.httpServer.domain.value_object.Password;
+// FIX: Don't use DTO's here. Only use Entities.
+import com.fitapp.httpServer.application.dto.UserDto;
+import com.fitapp.httpServer.infrastructure.persistence.config.DatabaseConfig;
 import com.fitapp.httpServer.infrastructure.persistence.jdbc.JdbcConnector;
 
 public class UserRepository {
@@ -29,28 +31,26 @@ public class UserRepository {
     }
   }
 
-  public List<User> findAllUsers() {
+  public List<UserDto> findAllUsers() {
     // Establish connection to DB
     establishConnection();
     // SQL query
     String sql = "SELECT * FROM " + USER_TABLE;
     // List to save all user objects we retrieve from the DB
-    List<User> users = new ArrayList<>();
+    List<UserDto> users = new ArrayList<>();
 
     try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
       // pstmt.setString(1, USER_TABLE);
       try (ResultSet resultSet = pstmt.executeQuery()) {
         while (resultSet.next()) {
-          Password password = new Password(resultSet.getString("password"));
-          User user = new User(
+          UserDto userDto = new UserDto(
               resultSet.getLong("user_id"),
               resultSet.getString("fname"),
               resultSet.getString("lname"),
-              password,
               resultSet.getInt("age"),
               resultSet.getInt("body_height"),
               resultSet.getInt("body_weight"));
-          users.add(user);
+          users.add(userDto);
 
           // TODO: Implement Connection Pooling, to keep connections opening
           // -> closing and opening connections is expansive.
@@ -68,20 +68,19 @@ public class UserRepository {
     }
   }
 
-  public Optional<User> findUser(long user_id) {
+  public Optional<UserDto> findUser(long user_id) {
     String sql = "SELECT * FROM " + USER_TABLE + " WHERE user_id=" + user_id;
     try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
       try (ResultSet resultSet = pstmt.executeQuery()) {
         if (resultSet.next()) {
-          User newUser = new User(
+          UserDto userDto = new UserDto(
               resultSet.getLong("user_id"),
               resultSet.getString("fname"),
               resultSet.getString("lname"),
-              new Password(resultSet.getString("password")),
               resultSet.getInt("age"),
               resultSet.getInt("body_height"),
               resultSet.getInt("body_weight"));
-          return Optional.of(newUser);
+          return Optional.of(userDto);
         }
       }
     } catch (SQLException e) {
@@ -91,11 +90,13 @@ public class UserRepository {
   }
 
   public User createUser(User user) {
+    // Define SQL Statement
     String sql = """
           INSERT INTO user (firstname, lastname, age, body_height, body_weight)
           VALUES (?, ?, ?, ?, ?);
         """;
 
+    // Define Statement and complete SQL Statement with Values
     try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
       pstmt.setString(1, user.getFname());
       pstmt.setString(2, user.getLname());
@@ -103,9 +104,10 @@ public class UserRepository {
       pstmt.setInt(4, user.getBodyHeight());
       pstmt.setInt(5, user.getBodyWeight());
 
+      // Excecute Statement
       pstmt.executeUpdate();
 
-      // Get the ID from the created user
+      // Get the ID from the created user in the Database and set it to the Entity
       try (ResultSet keys = pstmt.getGeneratedKeys()) {
         if (keys.next()) {
           long id = keys.getLong(1); // 1 = First column in the row

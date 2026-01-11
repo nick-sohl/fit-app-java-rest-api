@@ -1,9 +1,5 @@
 package com.fitapp.httpServer.infrastructure.persistence.jdbc;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 public class JdbcConnector {
   private final String PROTOCOL;
   private final String HOST;

@@ -1,18 +1,27 @@
 package com.fitapp.httpServer;
 
+import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import com.fitapp.httpServer.application.service.UserService;
+// Adapter
 import com.fitapp.httpServer.infrastructure.adapter.UserRepositoryAdapter;
-import com.fitapp.httpServer.infrastructure.persistence.UserRepository;
+
+// DAO
+import com.fitapp.httpServer.infrastructure.persistence.repository.UserRepository;
+
+// Service
+import com.fitapp.httpServer.application.service.UserService;
+
+// Controller
 import com.fitapp.httpServer.presentation.StaticFileHandler;
-import com.fitapp.httpServer.presentation.api.UserController;
-import com.sun.net.httpserver.HttpServer;
+import com.fitapp.httpServer.presentation.controller.UserController;
+import com.fitapp.httpServer.presentation.controller.MeasurementController;
 
 public class HttpServerApplication {
 
   private static UserController userController;
+  private static MeasurementController measurementController;
 
   private static void runServer() throws IOException {
     // Create Http Server
@@ -24,13 +33,17 @@ public class HttpServerApplication {
 
     // Routes
     httpServer.createContext("/api", new StaticFileHandler("static/index.html", "text/html"));
-    httpServer.createContext("/api/user", userController);
     httpServer.createContext("/css/styles.css", new StaticFileHandler("static/css/styles.css", "text/css;"));
-
+    // User
+    httpServer.createContext("/api/user", userController);
+    // Measurement
+    httpServer.createContext("/api/measurement", measurementController);
     System.out.println("Http Context's created!");
+
     // Start Http Server
-    httpServer.start();
     System.out.println("Starting server...");
+    httpServer.start();
+    System.out.println("Server is Running!");
   }
 
   public static void main(String[] args) throws IOException {
@@ -44,7 +57,7 @@ public class HttpServerApplication {
     UserService userService = new UserService(userRepositoryAdapter);
     // Uses the Service to get the computed data
     HttpServerApplication.userController = new UserController(userService);
+    HttpServerApplication.measurementController = new MeasurementController();
     HttpServerApplication.runServer();
-    System.out.println("Server is Running!");
   }
 }

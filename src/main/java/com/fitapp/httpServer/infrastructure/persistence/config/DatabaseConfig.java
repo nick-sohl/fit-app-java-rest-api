@@ -1,4 +1,4 @@
-package com.fitapp.httpServer.infrastructure.persistence;
+package com.fitapp.httpServer.infrastructure.persistence.config;
 
 import com.fitapp.httpServer.infrastructure.persistence.jdbc.JdbcConnector;
 

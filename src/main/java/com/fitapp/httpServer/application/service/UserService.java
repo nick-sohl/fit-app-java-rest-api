@@ -7,11 +7,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.fitapp.httpServer.application.cqrs.command.CreateUserCommand;
 import com.fitapp.httpServer.application.port.UserRepositoryInterface;
 import com.fitapp.httpServer.domain.entity.User;
+import com.fitapp.httpServer.application.dto.UserDto;
 
-// TODO: Create DTO
 public class UserService {
   UserRepositoryInterface userRepositoryInterface;
-  private static final AtomicInteger count = new AtomicInteger(0);
 
   // The User Interface will be substituted by the
   public UserService(UserRepositoryInterface userRepositoryInterface) {
@@ -19,17 +18,17 @@ public class UserService {
   }
 
   // GET all uesr records
-  public List<User> findAllUsers() {
+  public List<UserDto> findAllUsers() {
     return userRepositoryInterface.findAllUsers();
   }
 
   // GET user-record by id
-  public Optional<User> findUserById(long userId) {
-    Optional<User> user = userRepositoryInterface.findUser(userId);
-    if (!user.isPresent()) {
+  public Optional<UserDto> findUserById(long userId) {
+    Optional<UserDto> userDto = userRepositoryInterface.findUser(userId);
+    if (!userDto.isPresent()) {
       throw new RuntimeException("No user found.");
     }
-    return user;
+    return userDto;
   }
 
   // CREATE new user record

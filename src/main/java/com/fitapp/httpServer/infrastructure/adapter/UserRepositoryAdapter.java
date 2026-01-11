@@ -3,10 +3,10 @@ package com.fitapp.httpServer.infrastructure.adapter;
 import java.util.List;
 import java.util.Optional;
 
-import com.fitapp.httpServer.application.cqrs.command.CreateUserCommand;
 import com.fitapp.httpServer.application.port.UserRepositoryInterface;
 import com.fitapp.httpServer.domain.entity.User;
-import com.fitapp.httpServer.infrastructure.persistence.UserRepository;
+import com.fitapp.httpServer.application.dto.UserDto;
+import com.fitapp.httpServer.infrastructure.persistence.repository.UserRepository;
 
 public class UserRepositoryAdapter implements UserRepositoryInterface {
   UserRepository userRepository;
@@ -17,12 +17,12 @@ public class UserRepositoryAdapter implements UserRepositoryInterface {
   }
 
   @Override
-  public Optional<User> findUser(long userId) {
+  public Optional<UserDto> findUser(long userId) {
     return userRepository.findUser(userId);
   }
 
   @Override
-  public List<User> findAllUsers() {
+  public List<UserDto> findAllUsers() {
     return userRepository.findAllUsers();
   }
 
@@ -32,7 +32,7 @@ public class UserRepositoryAdapter implements UserRepositoryInterface {
   }
 
   @Override
-  public User updateUser() {
+  public UserDto updateUser() {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'updateUser'");
   }
