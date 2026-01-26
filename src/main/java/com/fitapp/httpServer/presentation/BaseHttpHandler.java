@@ -2,11 +2,15 @@ package com.fitapp.httpServer.presentation;
 
 import java.io.IOException;
 
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.Headers;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+
+// INFO: Template Method Pattern
+// Set default headers, handle error, exchange
 
 abstract class BaseHttpHandler implements HttpHandler {
+
   private final static String ORIGIN = "http://localhost:4321"; // Astro Frontend
 
   @Override
@@ -21,8 +25,7 @@ abstract class BaseHttpHandler implements HttpHandler {
     }
   }
 
-  protected abstract void handleRequest(HttpExchange exchange) throws IOException;
-
+  // SET COMMON HEADERS
   private void setCommonHeaders(HttpExchange exchange) {
     Headers headers = exchange.getResponseHeaders();
     headers.add("Content-Type", "application/json");
@@ -32,6 +35,10 @@ abstract class BaseHttpHandler implements HttpHandler {
     headers.add("Access-Control-Max-Age", "86400");
   }
 
+  // DEFINE METHOD HANDLE REQUEST
+  protected abstract void handleRequest(HttpExchange exchange) throws IOException;
+
+  // HANDLE ERRORS
   private void handleError(HttpExchange exchange, Exception e) throws IOException {
     e.printStackTrace();
     exchange.sendResponseHeaders(500, -1);

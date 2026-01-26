@@ -1,58 +1,33 @@
 package com.fitapp.httpServer.domain.entity;
 
+import java.time.Instant;
+
 public class Measurement {
-  Long measurementId;
-  String firstName;
-  String LastName;
-  int age;
-  int bodyHeight;
-  int bodyWeight;
+  private Long mid;
+  private Long clientId;
+  private Instant measuredAt;
 
   public Long getMeasurementId() {
-    return measurementId;
+    return mid;
   }
 
-  public void setMeasurementId(Long measurementId) {
-    this.measurementId = measurementId;
+  public void setMeasurementId(Long mid) {
+    this.mid = mid;
   }
 
-  public String getFirstName() {
-    return firstName;
+  public Long getClientId() {
+    return clientId;
   }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
+  public void setClientId(Long clientId) {
+    this.clientId = clientId;
   }
 
-  public String getLastName() {
-    return LastName;
+  public Instant getMeasuredAt() {
+    return measuredAt;
   }
 
-  public void setLastName(String lastName) {
-    LastName = lastName;
-  }
-
-  public int getAge() {
-    return age;
-  }
-
-  public void setAge(int age) {
-    this.age = age;
-  }
-
-  public int getBodyHeight() {
-    return bodyHeight;
-  }
-
-  public void setBodyHeight(int bodyHeight) {
-    this.bodyHeight = bodyHeight;
-  }
-
-  public int getBodyWeight() {
-    return bodyWeight;
-  }
-
-  public void setBodyWeight(int bodyWeight) {
-    this.bodyWeight = bodyWeight;
+  public void setMeasuredAt(Instant measuredAt) {
+    this.measuredAt = measuredAt;
   }
 }

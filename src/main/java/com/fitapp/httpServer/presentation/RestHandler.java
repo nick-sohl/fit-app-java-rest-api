@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import com.sun.net.httpserver.HttpExchange;
 
+// INFO: Handle methods, handle options request, dispatch GET, POST, DELETE
+
 public abstract class RestHandler extends BaseHttpHandler {
 
   @Override
@@ -18,6 +20,7 @@ public abstract class RestHandler extends BaseHttpHandler {
     switch (method) {
       case "GET" -> doGet(exchange);
       case "POST" -> doPost(exchange);
+      case "DELETE" -> doDelete(exchange);
       default -> exchange.sendResponseHeaders(405, -1);
     }
   }
@@ -31,6 +34,14 @@ public abstract class RestHandler extends BaseHttpHandler {
   }
 
   protected void doPost(HttpExchange exchange) {
+    try {
+      exchange.sendResponseHeaders(405, -1);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  protected void doDelete(HttpExchange exchange) {
     try {
       exchange.sendResponseHeaders(405, -1);
     } catch (IOException e) {

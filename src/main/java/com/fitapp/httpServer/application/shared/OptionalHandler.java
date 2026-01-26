@@ -4,11 +4,8 @@ import java.util.Optional;
 
 public class OptionalHandler {
 
-  public static <T> boolean validateOptional(Optional<T> optional) {
-    if (!optional.isPresent()) {
-      return false;
-    }
-    return true;
+  public static <T> T getValue(Optional<T> optional) {
+    return optional.orElse(null);
   }
 
 }
