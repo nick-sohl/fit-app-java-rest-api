@@ -44,3 +44,7 @@ buildNumber.properties
 .classpath
 
 /secrets
+
+.env
+.env.development
+.env.production
