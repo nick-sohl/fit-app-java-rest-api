@@ -12,6 +12,10 @@ public abstract class RestHandler extends BaseHttpHandler {
   protected final void handleRequest(HttpExchange exchange) throws IOException {
     String method = exchange.getRequestMethod();
 
+    // INFO: The client requests permitted communication options for the given URL
+    // When you make a "non-simple" cross-origin request, the browser first sends an
+    // OPTIONS request to the server. This preflight request checks if the actual
+    // request is allowed based on origin, method, and headers.
     if ("OPTIONS".equalsIgnoreCase(method)) {
       exchange.sendResponseHeaders(204, -1);
       return;

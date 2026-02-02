@@ -11,6 +11,7 @@ import com.sun.net.httpserver.HttpHandler;
 
 abstract class BaseHttpHandler implements HttpHandler {
 
+  // DEFINE ALLOWED ORIGIN FOR CORS
   private final static String ORIGIN = "http://localhost:4321"; // Astro Frontend
 
   @Override

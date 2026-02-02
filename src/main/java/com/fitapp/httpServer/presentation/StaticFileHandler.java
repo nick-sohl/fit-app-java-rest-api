@@ -37,10 +37,6 @@ public class StaticFileHandler implements HttpHandler {
   @Override
   public void handle(HttpExchange exchange) throws IOException {
 
-    // Get metadata from the request
-    String method = exchange.getRequestMethod();
-    Headers headers = exchange.getRequestHeaders();
-
     // Set Response Headers
     Headers responseHeaders = exchange.getResponseHeaders();
     responseHeaders.add("Access-Control-Allow-Origin", "*");
